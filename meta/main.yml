@@ -1,0 +1,21 @@
+# meta file for rsyslog
+---
+galaxy_info:
+  author: Mischa ter Smitten
+  company: Oefenweb.nl B.V.
+  description: Manage rsyslog and rsyslog.d in Debian-like systems
+  license: MIT
+  min_ansible_version: 1.6
+  platforms:
+    - name: Ubuntu
+      versions:
+        - precise
+        - trusty
+    - name: Debian
+      versions:
+        - wheezy
+        - jessie
+  categories:
+    - system
+    - monitoring
+dependencies: []

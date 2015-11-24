@@ -1,0 +1,66 @@
+# {{ ansible_managed }}
+#  /etc/rsyslog.conf  Configuration file for rsyslog.
+#
+#    For more information see
+#    /usr/share/doc/rsyslog-doc/html/rsyslog_conf.html
+#
+#  Default logging rules can be found in /etc/rsyslog.d/50-default.conf
+
+
+#################
+#### MODULES ####
+#################
+
+$ModLoad imuxsock # provides support for local system logging
+$ModLoad imklog   # provides kernel logging support
+#$ModLoad immark  # provides --MARK-- message capability
+
+# provides UDP syslog reception
+#$ModLoad imudp
+#$UDPServerRun 514
+
+# provides TCP syslog reception
+#$ModLoad imtcp
+#$InputTCPServerRun 514
+
+{% if ansible_distribution == 'Ubuntu' %}
+# Enable non-kernel facility klog messages
+$KLogPermitNonKernelFacility on
+{% endif %}
+
+###########################
+#### GLOBAL DIRECTIVES ####
+###########################
+
+#
+# Use traditional timestamp format.
+# To enable high precision timestamps, comment out the following line.
+#
+$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
+
+{% if ansible_distribution == 'Ubuntu' %}
+# Filter duplicated messages
+$RepeatedMsgReduction {{ 'on' if rsyslog_repeated_msg_reduction | default(True) else 'off' }}
+{% endif %}
+
+#
+# Set the default permissions for all log files.
+#
+$FileOwner {{ rsyslog_file_owner | default('syslog' if ansible_distribution == 'Ubuntu' else 'root') }}
+$FileGroup {{ rsyslog_file_group | default('adm') }}
+$FileCreateMode {{ rsyslog_file_create_mode | default('0640') }}
+$DirCreateMode {{ rsyslog_dir_create_mode | default('0755') }}
+$Umask {{ rsyslog_umask | default('0022') }}
+{% if ansible_distribution == 'Ubuntu' %}
+$PrivDropToUser {{ rsyslog_priv_drop_to_user | default('syslog') }}
+$PrivDropToGroup {{ rsyslog_priv_drop_to_group | default('syslog') }}
+{% endif %}
+#
+# Where to place spool and state files
+#
+$WorkDirectory /var/spool/rsyslog
+
+#
+# Include all config files in /etc/rsyslog.d/
+#
+$IncludeConfig /etc/rsyslog.d/*.conf
