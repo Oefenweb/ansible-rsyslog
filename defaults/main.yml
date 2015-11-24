@@ -1,47 +1,76 @@
 # defaults file for rsyslog
 ---
 rsyslog_rsyslog_d_files:
-  20-ufw:
-    - rule: :msg,contains,"[UFW " 
-      logpath: /var/log/ufw.log
   50-default:
-    # First some standard log files. Log by facility
-    - rule: auth,authpriv.*
-      logpath: /var/log/auth.log
+    #
+    # First some standard log files. Log by facility.
+    #
+    - rule: 'auth,authpriv.*'
+      logpath: '/var/log/auth.log'
     - rule: '*.*;auth,authpriv.none'
-      logpath: -/var/log/syslog
+      logpath: '-/var/log/syslog'
     - rule: '#cron.*'
-      logpath: /var/log/cron.log
+      logpath: '/var/log/cron.log'
     - rule: '#daemon.*'
-      logpath: -/var/log/daemon.log
-    - rule: kern.*
-      logpath: -/var/log/kern.log
+      logpath: '-/var/log/daemon.log'
+    - rule: 'kern.*'
+      logpath: '-/var/log/kern.log'
     - rule: '#lpr.*'
-      logpath: -/var/log/lpr.log
-    - rule: mail.*
-      logpath: -/var/log/mail.log
+      logpath: '-/var/log/lpr.log'
+    - rule: 'mail.*'
+      logpath: '-/var/log/mail.log'
     - rule: '#user.*'
-      logpath: -/var/log/user.log
-    # Logging for the mail system. Split it up so that it is easy to write scripts to parse these files
+      logpath: '-/var/log/user.log'
+
+    #
+    # Logging for the mail system. Split it up so that
+    # it is easy to write scripts to parse these files.
+    #
     - rule: '#mail.info'
-      logpath: -/var/log/mail.info
+      logpath: '-/var/log/mail.info'
     - rule: '#mail.warn'
-      logpath: -/var/log/mail.warn
-    - rule: mail.err
-      logpath: /var/log/mail.err
-    # Logging for INN news system
-    - rule: news.crit
-      logpath: /var/log/news/news.crit
-    - rule: news.err
-      logpath: /var/log/news/news.err
-    - rule: news.notice
-      logpath: -/var/log/news/news.notice
-    # Emergencies are sent to everybody logged in
+      logpath: '-/var/log/mail.warn'
+    - rule: 'mail.err'
+      logpath: '/var/log/mail.err'
+
+    #
+    # Logging for INN news system.
+    #
+    - rule: 'news.crit'
+      logpath: '/var/log/news/news.crit'
+    - rule: 'news.err'
+      logpath: '/var/log/news/news.err'
+    - rule: 'news.notice'
+      logpath: '-/var/log/news/news.notice'
+
+    #
+    # Some "catch-all" log files.
+    #
+    - rule: '#*.=debug;auth,authpriv.none;news.none;mail.none'
+      logpath: '-/var/log/debug'
+    - rule: '#*.=info;*.=notice;*.=warn;auth,authpriv.none;cron,daemon.none;mail,news.none'
+      logpath: '-/var/log/messages'
+
+    #
+    # Emergencies are sent to everybody logged in.
+    #
     - rule: '*.emerg'
-      logpath: ':omusrmsg:*'          
-    - rule: >-
-        daemon.*;mail.*;\
-        	news.err;\
-        	*.=debug;*.=info;\
-        	*.=notice;*.=warn
+      logpath: ':omusrmsg:*'
+
+    #
+    # I like to have messages displayed on the console, but only on a virtual
+    # console I usually leave idle.
+    #
+    - rule: '#daemon,mail.*;news.=crit;news.=err;news.=notice;*.=debug;*.=info;*.=notice;*.=warn'
+      logpath: '/dev/tty8'
+
+    # The named pipe /dev/xconsole is for the `xconsole' utility.  To use it,
+    # you must invoke `xconsole' with the `-file' option:
+    #
+    #    $ xconsole -file /dev/xconsole [...]
+    #
+    # NOTE: adjust the list below, or you'll go crazy if you have a reasonably
+    #      busy site..
+    #
+    - rule: 'daemon.*;mail.*;news.err;*.=debug;*.=info;*.=notice;*.=warn'
       logpath: '|/dev/xconsole'

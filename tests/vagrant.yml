@@ -5,12 +5,3 @@
   sudo: true
   roles:
     - ../../
-  vars:
-    rsyslog_repeated_msg_reduction: true
-    rsyslog_file_owner: syslog
-    rsyslog_file_group: adm
-    rsyslog_file_create_mode: '0640'
-    rsyslog_dir_create_mode: '0755'
-    rsyslog_umask: '0022'
-    rsyslog_priv_drop_to_user: syslog
-    rsyslog_priv_drop_to_group: syslog
