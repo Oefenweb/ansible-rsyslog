@@ -17,6 +17,7 @@
     group: root
     mode: 0440
   with_dict: rsyslog_rsyslog_d_files
+  notify: restart rsyslog
   tags: [configuration, rsyslog, rsyslog-configuration, rsyslog-configuration-rsyslog-d]
 
 - name: update global configuration file
@@ -27,4 +28,5 @@
     owner: root
     group: root
     mode: 0440
+  notify: restart rsyslog
   tags: [configuration, rsyslog, rsyslog-configuration, rsyslog-configuration-rsyslog]
