@@ -5,7 +5,7 @@ rsyslog_rsyslog_d_files:
     - rule: :msg,contains,"[UFW " 
       logpath: /var/log/ufw.log
   50-default:
-    # First some standard log files.  Log by facility.
+    # First some standard log files. Log by facility
     - rule: auth,authpriv.*
       logpath: /var/log/auth.log
     - rule: '*.*;auth,authpriv.none'
@@ -22,22 +22,21 @@ rsyslog_rsyslog_d_files:
       logpath: -/var/log/mail.log
     - rule: '#user.*'
       logpath: -/var/log/user.log
-    # Logging for the mail system.  Split it up so that
-    # it is easy to write scripts to parse these files.          
+    # Logging for the mail system. Split it up so that it is easy to write scripts to parse these files
     - rule: '#mail.info'
       logpath: -/var/log/mail.info
     - rule: '#mail.warn'
       logpath: -/var/log/mail.warn
     - rule: mail.err
       logpath: /var/log/mail.err
-    # Logging for INN news system.
+    # Logging for INN news system
     - rule: news.crit
       logpath: /var/log/news/news.crit
     - rule: news.err
       logpath: /var/log/news/news.err
     - rule: news.notice
       logpath: -/var/log/news/news.notice
-    # Emergencies are sent to everybody logged in.
+    # Emergencies are sent to everybody logged in
     - rule: '*.emerg'
       logpath: ':omusrmsg:*'          
     - rule: >-
