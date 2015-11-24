@@ -46,7 +46,7 @@ $RepeatedMsgReduction {{ 'on' if rsyslog_repeated_msg_reduction | default(True) 
 #
 # Set the default permissions for all log files.
 #
-$FileOwner {{ rsyslog_file_owner | default(('syslog' if ansible_distribution == 'Ubuntu' else 'root')) }}
+$FileOwner {{ rsyslog_file_owner | default('syslog' if ansible_distribution == 'Ubuntu' else 'root') }}
 $FileGroup {{ rsyslog_file_group | default('adm') }}
 $FileCreateMode {{ rsyslog_file_create_mode | default('0640') }}
 $DirCreateMode {{ rsyslog_dir_create_mode | default('0755') }}
