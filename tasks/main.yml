@@ -2,7 +2,7 @@
 ---
 - name: install
   apt:
-    name: sudo
+    name: rsyslog
     state: latest
     update_cache: true
     cache_valid_time: 3600
@@ -22,7 +22,7 @@
 - name: update global configuration file
   template:
     src: etc/rsyslog.conf.j2
-    dest: /etc/rsyslog
+    dest: /etc/rsyslog.conf
     validate: "rsyslogd -N1 -f %s"
     owner: root
     group: root
