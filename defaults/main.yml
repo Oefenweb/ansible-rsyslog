@@ -1,7 +1,13 @@
 # defaults file for rsyslog
 ---
-rsyslog_rsyslog_d_files:
-  50-default:
+rsyslog_rsyslog_d_presets_20_ufw:
+  rules:
+    # Log kernel generated UFW log messages to file
+    - rule: ':msg,contains,"[UFW "'
+      logpath: '/var/log/ufw.log'
+
+rsyslog_rsyslog_d_presets_50_default:
+  rules:
     #
     # First some standard log files. Log by facility.
     #
@@ -74,3 +80,14 @@ rsyslog_rsyslog_d_files:
     #
     - rule: 'daemon.*;mail.*;news.err;*.=debug;*.=info;*.=notice;*.=warn'
       logpath: '|/dev/xconsole'
+
+rsyslog_rsyslog_d_presets_postfix:
+  validate: false
+  directives:
+    # Create an additional socket in postfix's chroot in order not to break
+    # mail logging when rsyslog is restarted.  If the directory is missing,
+    # rsyslog will silently skip creating the socket.
+    - '$AddUnixListenSocket /var/spool/postfix/dev/log'
+
+rsyslog_rsyslog_d_files:
+  50-default: "{{ rsyslog_rsyslog_d_presets_50_default }}"
