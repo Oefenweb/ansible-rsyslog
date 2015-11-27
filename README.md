@@ -64,10 +64,7 @@ None
         rules:
           - rule: ':msg,contains,"[UFW "'
             logpath: '/var/log/ufw.log'
-      postfix:
-        validate: false
-        directives:
-          - '$AddUnixListenSocket /var/spool/postfix/dev/log'
+      postfix: "{{ rsyslog_rsyslog_d_presets_postfix }}"
 ```
 
 #### License
