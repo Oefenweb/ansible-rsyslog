@@ -15,11 +15,25 @@
   template:
     src: etc/rsyslog.d/rsyslog.conf.j2
     dest: "/etc/rsyslog.d/{{ item.key }}.conf"
-    validate: "rsyslogd -N1 -f %s"
+    validate: "{{ 'rsyslogd -N1 -f %s' if item.value.validate | default(true) else 'true %s' }}"
     owner: root
     group: root
     mode: 0440
   with_dict: rsyslog_rsyslog_d_files
+  when: item.value.state | default('present') == 'present'
+  notify: restart rsyslog
+  tags:
+    - configuration
+    - rsyslog
+    - rsyslog-configuration
+    - rsyslog-configuration-rsyslog-d
+
+- name: remove configurations
+  file:
+    dest: "/etc/rsyslog.d/{{ item.key }}.conf"
+    state: absent
+  with_dict: rsyslog_rsyslog_d_files
+  when: item.value.state | default('present') == 'absent'
   notify: restart rsyslog
   tags:
     - configuration
