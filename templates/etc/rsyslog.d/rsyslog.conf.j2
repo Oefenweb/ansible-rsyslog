@@ -1,9 +1,13 @@
 # {{ ansible_managed }}
 
-{% for item in item.value.directives | default([]) %}
+{% for item in item.value.settings | default([]) %}
 {{ item }}
 {% endfor %}
 
 {% for item in item.value.rules | default([]) %}
 {{ item.rule }} {{ item.logpath }}
+{% endfor %}
+
+{% for item in item.value.directives | default([]) %}
+{{ item }}
 {% endfor %}
