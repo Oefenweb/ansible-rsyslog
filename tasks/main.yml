@@ -11,6 +11,19 @@
     - rsyslog
     - rsyslog-install
 
+- name: fix dir permissions
+  # workaround for: https://bugs.launchpad.net/ubuntu/+source/rsyslog/+bug/1256695/comments/5
+  file:
+    path: /var/log
+    owner: root
+    group: syslog
+    mode: 0775
+  tags:
+    - configuration
+    - rsyslog
+    - rsyslog-configuration
+    - rsyslog-configuration-permissions
+
 - name: update specific configuration files
   template:
     src: etc/rsyslog.d/rsyslog.conf.j2
