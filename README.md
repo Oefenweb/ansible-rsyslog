@@ -23,6 +23,7 @@ None
 * `rsyslog_rsyslog_d_files.key`: The name of the rsyslog configuration file (e.g `50-default`)
 * `rsyslog_rsyslog_d_files.key.state` [default: `present`]: State
 * `rsyslog_rsyslog_d_files.key.validate` [default: `true`]: Whether this configuration should be validated before it is applied
+* `rsyslog_rsyslog_d_files.key.settings` [default: `[]`]: Settings declarations
 * `rsyslog_rsyslog_d_files.key.rules` [default: `{}`]: Rule declarations
 * `rsyslog_rsyslog_d_files.key.rules.{n}.rule` [required]: Rule declaration
 * `rsyslog_rsyslog_d_files.key.rules.{n}.logpath` [required]: Path of the log file
@@ -65,6 +66,17 @@ None
           - rule: ':msg,contains,"[UFW "'
             logpath: '/var/log/ufw.log'
       postfix: "{{ rsyslog_rsyslog_d_presets_postfix }}"
+      49-haproxy:
+        settings:
+          # Create an additional socket in haproxy's chroot in order to allow logging via
+          # /dev/log to chroot'ed HAProxy processes
+          - '$AddUnixListenSocket /var/lib/haproxy/dev/log'
+        rules:
+          # Send HAProxy messages to a dedicated logfile
+          - rule: ':programname, startswith, "haproxy"'
+            logpath: '/var/log/haproxy.log'
+        directives:
+          - '&~'
 ```
 
 #### License

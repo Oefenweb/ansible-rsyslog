@@ -83,7 +83,7 @@ rsyslog_rsyslog_d_presets_50_default:
 
 rsyslog_rsyslog_d_presets_postfix:
   validate: false
-  directives:
+  settings:
     # Create an additional socket in postfix's chroot in order not to break
     # mail logging when rsyslog is restarted.  If the directory is missing,
     # rsyslog will silently skip creating the socket.
