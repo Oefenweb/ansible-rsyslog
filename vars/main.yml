@@ -1,2 +1,8 @@
 # vars file for rsyslog
 ---
+rsyslog_user: "{{ 'syslog' if ansible_distribution == 'Ubuntu' else 'root' }}"
+rsyslog_group: adm
+
+rsyslog_var_log_user: root
+rsyslog_var_log_group: "{{ rsyslog_user }}"
+rsyslog_var_log_mode: "{{ '0775' if ansible_distribution == 'Ubuntu' else '0755' }}"

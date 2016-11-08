@@ -46,14 +46,14 @@ $RepeatedMsgReduction {{ 'on' if rsyslog_repeated_msg_reduction | default(True) 
 #
 # Set the default permissions for all log files.
 #
-$FileOwner {{ rsyslog_file_owner | default('syslog' if ansible_distribution == 'Ubuntu' else 'root') }}
-$FileGroup {{ rsyslog_file_group | default('adm') }}
+$FileOwner {{ rsyslog_file_owner | default(rsyslog_user) }}
+$FileGroup {{ rsyslog_file_group | default(rsyslog_group) }}
 $FileCreateMode {{ rsyslog_file_create_mode | default('0640') }}
 $DirCreateMode {{ rsyslog_dir_create_mode | default('0755') }}
 $Umask {{ rsyslog_umask | default('0022') }}
 {% if ansible_distribution == 'Ubuntu' %}
-$PrivDropToUser {{ rsyslog_priv_drop_to_user | default('syslog') }}
-$PrivDropToGroup {{ rsyslog_priv_drop_to_group | default('syslog') }}
+$PrivDropToUser {{ rsyslog_priv_drop_to_user | default(rsyslog_user) }}
+$PrivDropToGroup {{ rsyslog_priv_drop_to_group | default(rsyslog_user) }}
 {% endif %}
 #
 # Where to place spool and state files
