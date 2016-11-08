@@ -15,9 +15,9 @@
   # workaround for: https://bugs.launchpad.net/ubuntu/+source/rsyslog/+bug/1256695/comments/5
   file:
     path: /var/log
-    owner: root
-    group: syslog
-    mode: 0775
+    owner: "{{ rsyslog_var_log_user }}"
+    group: "{{ rsyslog_var_log_group }}"
+    mode: "{{ rsyslog_var_log_mode }}"
   tags:
     - configuration
     - rsyslog
