@@ -48,12 +48,6 @@ branches:
   only:
     - master
 
-matrix:
-  allow_failures:
-    # See https://github.com/ansible/ansible-modules-core/issues/1170
-    #     https://github.com/ansible/ansible-modules-core/issues/1298
-    - env: ANSIBLE_VERSION=1.9.1
-
 before_install:
   - sudo apt-get update -qq
 
