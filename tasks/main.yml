@@ -68,3 +68,13 @@
     - rsyslog
     - rsyslog-configuration
     - rsyslog-configuration-rsyslog
+
+- name: start and enable service
+  service:
+    name: rsyslog
+    state: "{{ service_default_state | default('started') }}"
+    enabled: "{{ service_default_enabled | default(true) | bool }}"
+  tags:
+    - configuration
+    - rsyslog
+    - rsyslog-start-enable-service
