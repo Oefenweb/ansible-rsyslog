@@ -1,6 +1,6 @@
 ## rsyslog
 
-[![Build Status](https://travis-ci.org/Oefenweb/ansible-rsyslog.svg?branch=master)](https://travis-ci.org/Oefenweb/ansible-rsyslog) [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-rsyslog-blue.svg)](https://galaxy.ansible.com/tersmitten/rsyslog)
+[![Build Status](https://travis-ci.org/Oefenweb/ansible-rsyslog.svg?branch=master)](https://travis-ci.org/Oefenweb/ansible-rsyslog) [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-rsyslog-blue.svg)](https://galaxy.ansible.com/Oefenweb/rsyslog)
 
 Manage rsyslog and rsyslog.d in Debian-like systems.
 
