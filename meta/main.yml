@@ -1,6 +1,7 @@
 # meta file for rsyslog
 ---
 galaxy_info:
+  role_name: rsyslog
   author: Mischa ter Smitten
   company: Oefenweb.nl B.V.
   description: Manage rsyslog and rsyslog.d in Debian-like systems
@@ -12,10 +13,12 @@ galaxy_info:
         - precise
         - trusty
         - xenial
+        - bionic
     - name: Debian
       versions:
         - wheezy
         - jessie
+        - stretch
   galaxy_tags:
     - system
     - monitoring

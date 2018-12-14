@@ -2,7 +2,7 @@
 ---
 - name: install
   apt:
-    name: rsyslog
+    name: "{{ rsyslog_dependencies }}"
     state: "{{ apt_install_state | default('latest') }}"
     update_cache: true
     cache_valid_time: "{{ apt_update_cache_valid_time | default(3600) }}"
@@ -58,7 +58,7 @@
   template:
     src: etc/rsyslog.conf.j2
     dest: /etc/rsyslog.conf
-    validate: "rsyslogd -N1 -f %s"
+    validate: 'rsyslogd -N1 -f %s'
     owner: root
     group: root
     mode: 0440
