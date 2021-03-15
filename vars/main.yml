@@ -1,4 +1,4 @@
-# vars file for rsyslog
+# vars file
 ---
 rsyslog_dependencies:
   - rsyslog

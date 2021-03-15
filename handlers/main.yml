@@ -1,4 +1,4 @@
-# handlers file for rsyslog
+# handlers file
 ---
 - name: restart rsyslog
   service:

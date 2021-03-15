@@ -1,4 +1,4 @@
-# tasks file for rsyslog
+# tasks file
 ---
 - name: install
   apt:
