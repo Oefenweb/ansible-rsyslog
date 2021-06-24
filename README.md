@@ -1,6 +1,7 @@
 ## rsyslog
 
-[![Build Status](https://travis-ci.org/Oefenweb/ansible-rsyslog.svg?branch=master)](https://travis-ci.org/Oefenweb/ansible-rsyslog) [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-rsyslog-blue.svg)](https://galaxy.ansible.com/Oefenweb/rsyslog)
+[![CI](https://github.com/Oefenweb/ansible-rsyslog/workflows/CI/badge.svg)](https://github.com/Oefenweb/ansible-rsyslog/actions?query=workflow%3ACI)
+[![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-rsyslog-blue.svg)](https://galaxy.ansible.com/Oefenweb/rsyslog)
 
 Manage rsyslog and rsyslog.d in Debian-like systems.
 
@@ -10,11 +11,11 @@ None
 
 #### Variables
 
-* `rsyslog_repeated_msg_reduction`: [default: `true`]: Repeated message reduction 
+* `rsyslog_repeated_msg_reduction`: [default: `true`]: Repeated message reduction
 * `rsyslog_file_owner`: [default: `syslog`, `root` on Debian]: Set the file owner for dynaFiles newly created
 * `rsyslog_file_group`: [default: `adm`]: Set the file group for dynaFiles newly created
 * `rsyslog_file_create_mode`: [default: `0640`]: The creation mode with which rsyslogd creates new files
-* `rsyslog_dir_create_mode`: [default: `0755`]: The creation mode with which rsyslogd creates new directories 
+* `rsyslog_dir_create_mode`: [default: `0755`]: The creation mode with which rsyslogd creates new directories
 * `rsyslog_umask`: [default: `0022`]: The default rsyslogd processes' umask
 * `rsyslog_priv_drop_to_user`: [default: `syslog`, not used on Debian]: Name of the user rsyslog should run under after startup
 * `rsyslog_priv_drop_to_group`: [default: `syslog`, not used on Debian]: Name of the group rsyslog should run under after startup
