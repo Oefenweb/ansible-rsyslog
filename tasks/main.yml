@@ -11,8 +11,8 @@
     - rsyslog
     - rsyslog-install
 
+# workaround for: https://bugs.launchpad.net/ubuntu/+source/rsyslog/+bug/1256695/comments/5
 - name: fix dir permissions
-  # workaround for: https://bugs.launchpad.net/ubuntu/+source/rsyslog/+bug/1256695/comments/5
   file:
     path: /var/log
     owner: "{{ rsyslog_var_log_user }}"
