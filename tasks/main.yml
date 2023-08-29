@@ -1,7 +1,7 @@
 # tasks file
 ---
 - name: install
-  apt:
+  ansible.builtin.apt:
     name: "{{ rsyslog_dependencies }}"
     state: "{{ apt_install_state | default('latest') }}"
     update_cache: true
@@ -13,7 +13,7 @@
 
 # workaround for: https://bugs.launchpad.net/ubuntu/+source/rsyslog/+bug/1256695/comments/5
 - name: fix dir permissions
-  file:
+  ansible.builtin.file:
     path: /var/log
     owner: "{{ rsyslog_var_log_user }}"
     group: "{{ rsyslog_var_log_group }}"
@@ -25,7 +25,7 @@
     - rsyslog-configuration-permissions
 
 - name: update specific configuration files
-  template:
+  ansible.builtin.template:
     src: etc/rsyslog.d/rsyslog.conf.j2
     dest: "/etc/rsyslog.d/{{ item.key }}.conf"
     validate: "{{ 'rsyslogd -N1 -f %s' if item.value.validate | default(true) else 'true %s' }}"
@@ -42,7 +42,7 @@
     - rsyslog-configuration-rsyslog-d
 
 - name: remove configurations
-  file:
+  ansible.builtin.file:
     dest: "/etc/rsyslog.d/{{ item.key }}.conf"
     state: absent
   with_dict: "{{ rsyslog_rsyslog_d_files }}"
@@ -55,7 +55,7 @@
     - rsyslog-configuration-rsyslog-d
 
 - name: update global configuration file
-  template:
+  ansible.builtin.template:
     src: etc/rsyslog.conf.j2
     dest: /etc/rsyslog.conf
     validate: 'rsyslogd -N1 -f %s'
@@ -70,7 +70,7 @@
     - rsyslog-configuration-rsyslog
 
 - name: start and enable service
-  service:
+  ansible.builtin.service:
     name: rsyslog
     state: "{{ service_default_state | default('started') }}"
     enabled: "{{ service_default_enabled | default(true) | bool }}"
