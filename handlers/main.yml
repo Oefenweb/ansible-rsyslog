@@ -1,7 +1,7 @@
 # handlers file
 ---
 - name: restart rsyslog
-  service:
+  ansible.builtin.service:
     name: rsyslog
     state: restarted
   when: service_default_state | default('started') == 'started'
