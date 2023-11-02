@@ -42,7 +42,7 @@ None
 ---
 - hosts: all
   roles:
-    - rsyslog
+    - oefenweb.rsyslog
 ```
 
 ##### Complex configuration
@@ -51,7 +51,7 @@ None
 ---
 - hosts: all
   roles:
-    - rsyslog
+    - oefenweb.rsyslog
   vars:
     rsyslog_repeated_msg_reduction: true
     rsyslog_file_owner: syslog
