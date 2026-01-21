@@ -56,7 +56,7 @@
 
 - name: stat global configuration file
   ansible.builtin.stat:
-    path: /etc/rsyslog.conf
+    path: "{{ rsyslog_global_config_file }}"
   register: _stat_result
   tags:
     - configuration
@@ -66,8 +66,8 @@
 
 - name: update global configuration file
   ansible.builtin.template:
-    src: etc/rsyslog.conf.j2
-    dest: /tmp/rsyslog.conf
+    src: "{{ rsyslog_global_config_file.lstrip('/') }}.j2"
+    dest: "{{ rsyslog_global_config_file_tmp }}"
     owner: root
     group: root
     mode: 0440
@@ -80,24 +80,28 @@
 
 - name: validate global configuration file
   ansible.builtin.command: >
-    rsyslogd -N1 -f /tmp/rsyslog.conf
+    rsyslogd -N1 -f {{ rsyslog_global_config_file_tmp }}
   register: _validate_result
   changed_when: false
   failed_when: _validate_result.rc != 0
   tags:
     - configuration
     - rsyslog
-    - rsyslog-validation
+    - rsyslog-configuration
+    - rsyslog-configuration-rsyslog
+    - rsyslog-configuration-rsyslog-validation
 
-- name: apply global configuration file
+- name: use global configuration file
   ansible.builtin.command: >
-    mv /tmp/rsyslog.conf /etc/rsyslog.conf
-  changed_when: _stat_result.checksum != _update_result.checksum
+    mv {{ rsyslog_global_config_file_tmp }} {{ rsyslog_global_config_file }}
+  changed_when: _stat_result.stat.checksum != _update_result.checksum
   notify: restart rsyslog
   tags:
     - configuration
     - rsyslog
-    - rsyslog-validation
+    - rsyslog-configuration
+    - rsyslog-configuration-rsyslog
+    - rsyslog-configuration-rsyslog-use
 
 - name: start and enable service
   ansible.builtin.service:
