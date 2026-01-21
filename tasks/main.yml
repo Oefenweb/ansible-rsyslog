@@ -72,6 +72,7 @@
     group: root
     mode: 0440
   register: _update_result
+  changed_when: false
   tags:
     - configuration
     - rsyslog
