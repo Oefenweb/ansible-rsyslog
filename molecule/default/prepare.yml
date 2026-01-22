@@ -2,4 +2,14 @@
 - name: Prepare
   hosts: all
   become: true
-  tasks: []
+  tasks:
+    - name: apparmor | disable | step | 1
+      ansible.builtin.command: >
+        ln -s /etc/apparmor.d/usr.sbin.rsyslogd /etc/apparmor.d/disable/
+      failed_when: false
+      changed_when: false
+    - name: apparmor | disable | step | 2
+      ansible.builtin.command: >
+        apparmor_parser -R /etc/apparmor.d/usr.sbin.rsyslogd
+      failed_when: false
+      changed_when: false
