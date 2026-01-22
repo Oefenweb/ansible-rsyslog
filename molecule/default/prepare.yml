@@ -5,6 +5,11 @@
   tasks:
     - name: apparmor | disable | step | 1
       ansible.builtin.command: >
+        ls -lha /etc/apparmor.d/
+      failed_when: false
+      changed_when: false
+    - name: apparmor | disable | step | 1
+      ansible.builtin.command: >
         ln -s /etc/apparmor.d/usr.sbin.rsyslogd /etc/apparmor.d/disable/
       failed_when: false
       changed_when: false
