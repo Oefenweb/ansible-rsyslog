@@ -5,7 +5,7 @@
   tasks:
     - name: apparmor | disable | step | 1
       ansible.builtin.command: >
-        ls -lha /etc/apparmor.d/
+        mkdir -p /etc/apparmor.d/disable
       failed_when: false
       changed_when: false
     - name: apparmor | disable | step | 1
