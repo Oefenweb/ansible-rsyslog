@@ -36,9 +36,24 @@
     - rsyslog-configuration-apparmor
     - rsyslog-configuration-apparmor-debug
 
-- name: apparmor | find profiles  # noqa risky-shell-pipe
+- name: apparmor | fill profile
+  ansible.builtin.copy:
+    content: |
+      {{ ansible_env.HOME }}/.ansible/tmp/** r,
+    dest: "{{ rsyslog_apparmor_profile_local }}"
+    owner: root
+    group: root
+    mode: 0640
+    force: true
+  tags:
+    - configuration
+    - rsyslog
+    - rsyslog-configuration
+    - rsyslog-configuration-apparmor
+
+- name: apparmor | cat profile  # noqa risky-shell-pipe
   ansible.builtin.shell: >
-    cat /etc/apparmor.d/local/usr.sbin.rsyslogd
+    cat {{ rsyslog_apparmor_profile_local }}
   failed_when: false
   changed_when: false
   tags:
