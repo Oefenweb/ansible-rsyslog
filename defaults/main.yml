@@ -1,5 +1,7 @@
 # defaults file
 ---
+rsyslog_global_config_file_validate: true
+
 rsyslog_rsyslog_d_presets_validate_false:
   validate: false
 
@@ -93,4 +95,4 @@ rsyslog_rsyslog_d_presets_postfix:
   validate: "{{ ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_version'] is version_compare('16.04', '<') }}"
 
 rsyslog_rsyslog_d_files:
-  50-default: "{{ rsyslog_rsyslog_d_presets_50_default | combine(rsyslog_rsyslog_d_presets_validate_false) }}"
+  50-default: "{{ rsyslog_rsyslog_d_presets_50_default }}"

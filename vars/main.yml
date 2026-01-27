@@ -12,3 +12,6 @@ rsyslog_var_log_mode: "{{ '0775' if ansible_facts['distribution'] == 'Ubuntu' el
 
 rsyslog_global_config_file: /etc/rsyslog.conf
 rsyslog_global_config_file_tmp: "{{ rsyslog_global_config_file | replace('etc', 'tmp') }}"
+
+rsyslog_apparmor_profile: /etc/apparmor.d/usr.sbin.rsyslogd
+rsyslog_apparmor_profile_local: /etc/apparmor.d/local/usr.sbin.rsyslogd
