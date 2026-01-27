@@ -95,6 +95,15 @@
         - rsyslog-configuration-apparmor
         - rsyslog-configuration-apparmor-debug
 
+    - name: fail
+      ansible.builtin.fail:
+        msg: 'Validation failed'
+      tags:
+        - configuration
+        - rsyslog
+        - rsyslog-configuration
+        - rsyslog-configuration-fail
+
 - name: start and enable service
   ansible.builtin.service:
     name: rsyslog
