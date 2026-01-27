@@ -24,6 +24,17 @@
     - rsyslog-configuration
     - rsyslog-configuration-permissions
 
+- name: apparmor | install
+  ansible.builtin.apt:
+    name:
+      - apparmor-utils
+    state: "{{ apt_install_state | default('latest') }}"
+  tags:
+    - configuration
+    - rsyslog
+    - rsyslog-configuration
+    - rsyslog-configuration-apparmor
+
 - name: apparmor | find profiles  # noqa risky-shell-pipe
   ansible.builtin.shell: >
     find /etc/apparmor.d -name "*syslog*" | sort
