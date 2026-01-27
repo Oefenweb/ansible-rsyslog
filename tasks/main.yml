@@ -96,9 +96,7 @@
 
 - name: apparmor | apply profile
   ansible.builtin.shell: >
-    true
-    && /usr/sbin/apparmor_parser -R {{ rsyslog_apparmor_profile }} || false
-    && /usr/sbin/apparmor_parser -a {{ rsyslog_apparmor_profile }}
+    /usr/sbin/apparmor_parser -r -W {{ rsyslog_apparmor_profile }}
   failed_when: false
   changed_when: false
   tags:
