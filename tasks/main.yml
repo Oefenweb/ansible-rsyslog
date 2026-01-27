@@ -50,13 +50,14 @@
     - rsyslog
     - rsyslog-configuration
     - rsyslog-configuration-apparmor
-    - rsyslog-configuration-apparmor-debug
+    - rsyslog-configuration-apparmor-find-homes
 
 - name: apparmor | fill profile
   ansible.builtin.copy:
     content: |
       {% for line in _find_homes.stdout_lines | unique %}
       {{ line }}/.ansible/tmp/ansible-tmp-** r,
+      {{ line }}/.ansible/tmp/** r,
       {% endfor %}
     dest: "{{ rsyslog_apparmor_profile_local }}"
     owner: root
@@ -68,6 +69,7 @@
     - rsyslog
     - rsyslog-configuration
     - rsyslog-configuration-apparmor
+    - rsyslog-configuration-apparmor-fill-profile
 
 - name: apparmor | cat profile
   ansible.builtin.command: >
@@ -83,7 +85,7 @@
 
 - name: apparmor | apply profile
   ansible.builtin.command: >
-    apparmor_parser -r {{ rsyslog_apparmor_profile }}
+    apparmor_parser -r -W {{ rsyslog_apparmor_profile }}
   failed_when: false
   changed_when: false
   tags:
