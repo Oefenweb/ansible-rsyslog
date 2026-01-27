@@ -105,7 +105,7 @@
     - rsyslog-configuration-rsyslog
     - rsyslog-configuration-rsyslog-validation
 
-- name: use global configuration file
+- name: use global configuration file  # noqa command-instead-of-module
   ansible.builtin.command: >
     rsync -ai --delete {{ rsyslog_global_config_file_tmp }} {{ rsyslog_global_config_file }}
   register: _synchronize
