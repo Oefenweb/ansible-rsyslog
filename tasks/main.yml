@@ -38,6 +38,17 @@
 
 - name: apparmor | complain
   ansible.builtin.command: >
+    aa-status
+  failed_when: false
+  changed_when: false
+  tags:
+    - configuration
+    - rsyslog
+    - rsyslog-configuration
+    - rsyslog-configuration-apparmor
+
+- name: apparmor | complain
+  ansible.builtin.command: >
     aa-complain /etc/apparmor.d/usr.sbin.rsyslogd
   failed_when: false
   changed_when: false
