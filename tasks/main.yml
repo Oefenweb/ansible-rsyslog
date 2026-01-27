@@ -84,8 +84,10 @@
     - rsyslog-configuration-apparmor-debug
 
 - name: apparmor | apply profile
-  ansible.builtin.command: >
-    apparmor_parser -r -W {{ rsyslog_apparmor_profile }}
+  ansible.builtin.shell: >
+    true
+    && apparmor_parser -R {{ rsyslog_apparmor_profile }} || false
+    && apparmor_parser -a {{ rsyslog_apparmor_profile }}
   failed_when: false
   changed_when: false
   tags:
