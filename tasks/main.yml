@@ -24,7 +24,7 @@
     - rsyslog-configuration
     - rsyslog-configuration-permissions
 
-- name: apparmor | find profiles
+- name: apparmor | find profiles  # noqa risky-shell-pipe
   ansible.builtin.shell: >
     find /etc/apparmor.d -name "*syslog*" | sort
   failed_when: false
