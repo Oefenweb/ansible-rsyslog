@@ -83,7 +83,7 @@
         - rsyslog-configuration
         - rsyslog-configuration-rsyslog
   rescue:
-    - name: apparmor | get errors
+    - name: apparmor | get errors  # noqa risky-shell-pipe
       ansible.builtin.shell: >
         grep syslog /var/log/kern.log
       failed_when: false
