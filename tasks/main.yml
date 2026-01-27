@@ -55,7 +55,7 @@
 - name: apparmor | fill profile
   ansible.builtin.copy:
     content: |
-      {% for line in _find_homes.stdout_lines %}
+      {% for line in _find_homes.stdout_lines | unique %}
       {{ line }}/.ansible/tmp/ansible-tmp-** r,
       {% endfor %}
     dest: "{{ rsyslog_apparmor_profile_local }}"
