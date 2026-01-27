@@ -2,6 +2,7 @@
 ---
 rsyslog_dependencies:
   - rsyslog
+  - rsync
 rsyslog_user: "{{ 'syslog' if ansible_facts['distribution'] == 'Ubuntu' else 'root' }}"
 rsyslog_group: adm
 
