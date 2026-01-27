@@ -67,7 +67,7 @@
   ansible.builtin.copy:
     content: |
       {% for line in _find_homes.stdout_lines | unique %}
-      {{ line }}/.ansible/tmp/ansible-tmp-** r,
+      {{ line }}/.ansible/tmp/** r,
       {% endfor %}
     dest: "{{ rsyslog_apparmor_profile_local }}"
     owner: root
@@ -165,7 +165,7 @@
 
     - name: fail
       ansible.builtin.fail:
-        msg: 'Validation failed'
+        msg: 'apparmor="DENIED"'
       tags:
         - configuration
         - rsyslog
