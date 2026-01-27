@@ -37,10 +37,27 @@
     - rsyslog-configuration-apparmor
     - rsyslog-configuration-apparmor-debug
 
+- name: apparmor | find homes
+  ansible.builtin.shell: >
+    true
+    && echo {{ '~' + ansible_facts['env']['USER'] }}
+    && echo {{ '~' + ansible_facts['env']['SUDO_USER'] }}
+  failed_when: false
+  changed_when: false
+  register: _find_homes
+  tags:
+    - configuration
+    - rsyslog
+    - rsyslog-configuration
+    - rsyslog-configuration-apparmor
+    - rsyslog-configuration-apparmor-debug
+
 - name: apparmor | fill profile
   ansible.builtin.copy:
     content: |
-      {{ ansible_env.HOME }}/.ansible/tmp/** r,
+      {% for line in _find_homes.stdout_lines %}
+      {{ line }}/.ansible/tmp/ansible-tmp-** r,
+      {% endfor %}
     dest: "{{ rsyslog_apparmor_profile_local }}"
     owner: root
     group: root
@@ -65,8 +82,8 @@
     - rsyslog-configuration-apparmor-debug
 
 - name: apparmor | apply profile
-  ansible.builtin.shell: >
-    apparmor_parser -R {{ rsyslog_apparmor_profile }}
+  ansible.builtin.command: >
+    apparmor_parser -r {{ rsyslog_apparmor_profile }}
   failed_when: false
   changed_when: false
   tags:
