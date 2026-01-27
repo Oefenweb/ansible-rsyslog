@@ -82,12 +82,12 @@ rsyslog_rsyslog_d_presets_50_default:
       logpath: '|/dev/xconsole'
 
 rsyslog_rsyslog_d_presets_postfix:
-  validate: false
   settings:
     # Create an additional socket in postfix's chroot in order not to break
     # mail logging when rsyslog is restarted.  If the directory is missing,
     # rsyslog will silently skip creating the socket.
     - '$AddUnixListenSocket /var/spool/postfix/dev/log'
+  validate: false
 
 rsyslog_rsyslog_d_files:
   50-default: "{{ rsyslog_rsyslog_d_presets_50_default }}"
