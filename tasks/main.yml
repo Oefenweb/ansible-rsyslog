@@ -29,6 +29,7 @@
     find /etc/apparmor.d -name "*syslog*" | sort
   failed_when: false
   changed_when: false
+  register: _find_profiles
   tags:
     - configuration
     - rsyslog
@@ -51,9 +52,21 @@
     - rsyslog-configuration
     - rsyslog-configuration-apparmor
 
-- name: apparmor | cat profile  # noqa risky-shell-pipe
-  ansible.builtin.shell: >
+- name: apparmor | cat profile
+  ansible.builtin.command: >
     cat {{ rsyslog_apparmor_profile_local }}
+  failed_when: false
+  changed_when: false
+  tags:
+    - configuration
+    - rsyslog
+    - rsyslog-configuration
+    - rsyslog-configuration-apparmor
+    - rsyslog-configuration-apparmor-debug
+
+- name: apparmor | apply profile
+  ansible.builtin.shell: >
+    apparmor_parser -R {{ rsyslog_apparmor_profile }}
   failed_when: false
   changed_when: false
   tags:
@@ -75,7 +88,6 @@
         mode: 0440
       with_dict: "{{ rsyslog_rsyslog_d_files }}"
       when: item.value.state | default('present') == 'present'
-      register: _validate_result
       notify: restart rsyslog
       tags:
         - configuration
