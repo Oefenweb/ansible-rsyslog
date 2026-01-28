@@ -114,7 +114,7 @@
         validate: "{{ 'rsyslogd -N1 -f %s' if item.value.validate | default(true) else 'true %s' }}"
         owner: root
         group: root
-        mode: 0440
+        mode: '0440'
       with_dict: "{{ rsyslog_rsyslog_d_files }}"
       when: item.value.state | default('present') == 'present'
       notify: restart rsyslog
@@ -138,7 +138,7 @@
         validate: "{{ 'rsyslogd -N1 -f %s' if rsyslog_global_config_file_validate else 'true %s' }}"
         owner: root
         group: root
-        mode: 0440
+        mode: '0440'
       tags:
         - rsyslog-configuration-rsyslog
   rescue:
