@@ -46,7 +46,7 @@
     - rsyslog
     - rsyslog-configuration
     - rsyslog-configuration-apparmor
-    - rsyslog-configuration-apparmor-debug
+    - rsyslog-configuration-apparmor-find-profiles
 
 - name: apparmor | find homes
   ansible.builtin.shell: >
@@ -69,6 +69,7 @@
       {% for line in _find_homes.stdout_lines | unique %}
       {{ line }}/.ansible/tmp/ansible-tmp-*/** r,
       {% endfor %}
+      {{ rsyslog_apparmor_profile_local_content }}
     dest: "{{ rsyslog_apparmor_profile_local }}"
     owner: root
     group: root
@@ -83,7 +84,10 @@
 
 - name: apparmor | cat profile
   ansible.builtin.command: >
-    cat {{ rsyslog_apparmor_profile }}
+    cat {{ rsyslog_apparmor_profile }} {{ rsyslog_apparmor_profile_local }}
+  when:
+    - rsyslog_apparmor_profile in _find_profiles.stdout_lines
+    - rsyslog_apparmor_profile_local in _find_profiles.stdout_lines
   failed_when: false
   changed_when: false
   tags:
@@ -91,14 +95,14 @@
     - rsyslog
     - rsyslog-configuration
     - rsyslog-configuration-apparmor
-    - rsyslog-configuration-apparmor-debug
+    - rsyslog-configuration-apparmor-cat-profile
 
 - name: apparmor | apply profile
   ansible.builtin.shell: >
     apparmor_parser -r -W {{ rsyslog_apparmor_profile }}
+  when: rsyslog_apparmor_profile_local in _find_profiles.stdout_lines
   failed_when: false
   changed_when: false
-  when: rsyslog_apparmor_profile_local in _find_profiles.stdout_lines
   tags:
     - configuration
     - rsyslog
@@ -107,6 +111,10 @@
     - rsyslog-configuration-apparmor-debug
 
 - name: try | catch
+  tags:
+    - configuration
+    - rsyslog
+    - rsyslog-configuration
   block:
     - name: update specific configuration files
       ansible.builtin.template:
@@ -120,9 +128,6 @@
       when: item.value.state | default('present') == 'present'
       notify: restart rsyslog
       tags:
-        - configuration
-        - rsyslog
-        - rsyslog-configuration
         - rsyslog-configuration-rsyslog-d
 
     - name: remove configurations
@@ -133,9 +138,6 @@
       when: item.value.state | default('present') == 'absent'
       notify: restart rsyslog
       tags:
-        - configuration
-        - rsyslog
-        - rsyslog-configuration
         - rsyslog-configuration-rsyslog-d
 
     - name: update global configuration file
@@ -147,31 +149,23 @@
         group: root
         mode: 0440
       tags:
-        - configuration
-        - rsyslog
-        - rsyslog-configuration
         - rsyslog-configuration-rsyslog
   rescue:
     - name: apparmor | get errors  # noqa risky-shell-pipe
       ansible.builtin.shell: >
-        grep -R 'apparmor="DENIED"' /var/log | grep syslog
+        grep -R 'apparmor="DENIED"' /var/log/{kern.log,syslog} | grep syslog
       failed_when: false
       changed_when: false
       tags:
-        - configuration
-        - rsyslog
-        - rsyslog-configuration
         - rsyslog-configuration-apparmor
         - rsyslog-configuration-apparmor-debug
 
-    - name: fail
+    - name: apparmor | fail
       ansible.builtin.fail:
-        msg: 'apparmor="DENIED"'
+        msg: 'apparmor="DENIED"?'
       tags:
-        - configuration
-        - rsyslog
-        - rsyslog-configuration
-        - rsyslog-configuration-fail
+        - rsyslog-configuration-apparmor
+        - rsyslog-configuration-apparmor-fail
 
 - name: start and enable service
   ansible.builtin.service:
