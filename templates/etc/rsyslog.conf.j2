@@ -1,10 +1,10 @@
-# {{ ansible_managed | comment }}
-#  /etc/rsyslog.conf  Configuration file for rsyslog.
+{{ ansible_managed | comment }}
+# /etc/rsyslog.conf configuration file for rsyslog
 #
-#    For more information see
-#    /usr/share/doc/rsyslog-doc/html/rsyslog_conf.html
+# For more information install rsyslog-doc and see
+# /usr/share/doc/rsyslog-doc/html/configuration/index.html
 #
-#  Default logging rules can be found in /etc/rsyslog.d/50-default.conf
+# Default logging rules can be found in /etc/rsyslog.d/50-default.conf
 
 
 #################
@@ -23,7 +23,7 @@ $ModLoad imklog   # provides kernel logging support
 #$ModLoad imtcp
 #$InputTCPServerRun 514
 
-{% if ansible_distribution == 'Ubuntu' %}
+{% if ansible_facts['distribution'] == 'Ubuntu' %}
 # Enable non-kernel facility klog messages
 $KLogPermitNonKernelFacility on
 {% endif %}
@@ -38,7 +38,7 @@ $KLogPermitNonKernelFacility on
 #
 $ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
 
-{% if ansible_distribution == 'Ubuntu' %}
+{% if ansible_facts['distribution'] == 'Ubuntu' %}
 # Filter duplicated messages
 $RepeatedMsgReduction {{ 'on' if rsyslog_repeated_msg_reduction | default(True) else 'off' }}
 {% endif %}
@@ -51,7 +51,7 @@ $FileGroup {{ rsyslog_file_group | default(rsyslog_group) }}
 $FileCreateMode {{ rsyslog_file_create_mode | default('0640') }}
 $DirCreateMode {{ rsyslog_dir_create_mode | default('0755') }}
 $Umask {{ rsyslog_umask | default('0022') }}
-{% if ansible_distribution == 'Ubuntu' %}
+{% if ansible_facts['distribution'] == 'Ubuntu' %}
 $PrivDropToUser {{ rsyslog_priv_drop_to_user | default(rsyslog_user) }}
 $PrivDropToGroup {{ rsyslog_priv_drop_to_group | default(rsyslog_user) }}
 {% endif %}

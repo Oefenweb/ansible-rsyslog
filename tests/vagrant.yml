@@ -1,7 +1,12 @@
 # test file
 ---
-- hosts: all
+- name: converge
+  hosts: all
   remote_user: vagrant
   become: true
   roles:
     - ../../
+  vars:
+    rsyslog_apparmor_extend_profile: true
+    rsyslog_apparmor_utils_install: false
+    rsyslog_apparmor_debug: true
