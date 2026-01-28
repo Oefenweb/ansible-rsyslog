@@ -83,7 +83,7 @@
 
 - name: apparmor | cat profile
   ansible.builtin.command: >
-    cat {{ rsyslog_apparmor_profile_local }}
+    cat {{ rsyslog_apparmor_profile }}
   failed_when: false
   changed_when: false
   tags:
