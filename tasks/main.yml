@@ -58,7 +58,7 @@
           ansible.builtin.shell: >
             true
             && echo {{ '~' + ansible_facts['env']['USER'] }}
-            && echo {{ '~' + ansible_facts['env']['SUDO_USER'] }}
+            && echo {{ '~' + (ansible_facts['env']['SUDO_USER'] | default(ansible_facts['env']['USER'])) }}
           failed_when: false
           changed_when: false
           register: _find_homes
