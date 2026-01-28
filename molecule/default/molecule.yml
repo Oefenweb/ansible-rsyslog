@@ -15,6 +15,7 @@ platforms:
     pre_build_image: true
     security_opt:
       - 'apparmor:unconfined'
+      - 'seccomp=unconfined'
 provisioner:
   name: ansible
   playbooks:
