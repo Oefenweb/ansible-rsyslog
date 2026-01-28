@@ -50,57 +50,56 @@
       tags:
         - rsyslog-configuration-apparmor-find-profiles
 
-    - name: apparmor | find homes
-      ansible.builtin.shell: >
-        true
-        && echo {{ '~' + ansible_facts['env']['USER'] }}
-        && echo {{ '~' + ansible_facts['env']['SUDO_USER'] }}
-      failed_when: false
-      changed_when: false
-      register: _find_homes
-      tags:
-        - rsyslog-configuration-apparmor-find-homes
-
-    - name: apparmor | fill profile
-      ansible.builtin.copy:
-        content: |
-          {% for line in _find_homes.stdout_lines | unique %}
-          {{ line }}/.ansible/tmp/ansible-tmp-*/** r,
-          {% endfor %}
-          {{ rsyslog_apparmor_profile_local_content }}
-        dest: "{{ rsyslog_apparmor_profile_local }}"
-        owner: root
-        group: root
-        mode: 0640
-        force: true
-      tags:
-        - rsyslog-configuration-apparmor-fill-profile
-
-    - name: apparmor | cat profile
-      ansible.builtin.command: >
-        cat {{ rsyslog_apparmor_profile }} {{ rsyslog_apparmor_profile_local }}
+    - name: apparmor | profile found
       when:
-        - rsyslog_apparmor_debug | bool
         - rsyslog_apparmor_profile in _find_profiles.stdout_lines
-        - rsyslog_apparmor_profile_local in _find_profiles.stdout_lines
-      failed_when: false
-      changed_when: false
-      tags:
-        - rsyslog-configuration-apparmor-cat-profiles
+      block:
+        - name: apparmor | find homes
+          ansible.builtin.shell: >
+            true
+            && echo {{ '~' + ansible_facts['env']['USER'] }}
+            && echo {{ '~' + ansible_facts['env']['SUDO_USER'] }}
+          failed_when: false
+          changed_when: false
+          register: _find_homes
+          tags:
+            - rsyslog-configuration-apparmor-find-homes
 
-    - name: apparmor | apply profile
-      ansible.builtin.shell: >
-        apparmor_parser -r -W {{ rsyslog_apparmor_profile }}
-      when:
-        - rsyslog_apparmor_profile_local in _find_profiles.stdout_lines
-      failed_when: false
-      changed_when: false
-      tags:
-        - configuration
-        - rsyslog
-        - rsyslog-configuration
-        - rsyslog-configuration-apparmor
-        - rsyslog-configuration-apparmor-debug
+        - name: apparmor | fill profile
+          ansible.builtin.copy:
+            content: |
+              {% for line in _find_homes.stdout_lines | unique %}
+              {{ line }}/.ansible/tmp/ansible-tmp-*/** r,
+              {% endfor %}
+              {{ rsyslog_apparmor_profile_local_content }}
+            dest: "{{ rsyslog_apparmor_profile_local }}"
+            owner: root
+            group: root
+            mode: 0640
+            force: true
+          tags:
+            - rsyslog-configuration-apparmor-fill-profile
+
+        - name: apparmor | cat profile
+          ansible.builtin.command: >
+            cat {{ rsyslog_apparmor_profile }} {{ rsyslog_apparmor_profile_local }}
+          when:
+            - rsyslog_apparmor_debug | bool
+            - rsyslog_apparmor_profile_local in _find_profiles.stdout_lines
+          failed_when: false
+          changed_when: false
+          tags:
+            - rsyslog-configuration-apparmor-cat-profiles
+
+        - name: apparmor | apply profile
+          ansible.builtin.shell: >
+            apparmor_parser -r -W {{ rsyslog_apparmor_profile }}
+          when:
+            - rsyslog_apparmor_profile_local in _find_profiles.stdout_lines
+          failed_when: false
+          changed_when: false
+          tags:
+            - rsyslog-configuration-apparmor-apply-profile
 
 - name: try | catch
   tags:
