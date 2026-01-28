@@ -8,4 +8,4 @@
     rsyslog_rsyslog_d_files:
       50-default: "{{ rsyslog_rsyslog_d_presets_50_default | combine(rsyslog_rsyslog_d_presets_validate_false) }}"
 
-    rsyslog_global_config_file_validate: true
+    rsyslog_global_config_file_validate: false

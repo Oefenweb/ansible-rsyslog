@@ -153,7 +153,7 @@
   rescue:
     - name: apparmor | get errors  # noqa risky-shell-pipe
       ansible.builtin.shell: >
-        grep -R 'apparmor="DENIED"' /var/log/{kern.log,syslog} | grep syslog
+        grep -R 'apparmor="DENIED"' /var/log/kern.log /var/log/syslog | grep syslog
       failed_when: false
       changed_when: false
       tags:
