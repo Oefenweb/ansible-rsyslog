@@ -5,6 +5,10 @@
   roles:
     - ../../../
   vars:
+    rsyslog_apparmor_extend_profile: true
+    rsyslog_apparmor_utils_install: true
+    rsyslog_apparmor_debug: true
+
     rsyslog_rsyslog_d_files:
       50-default: "{{ rsyslog_rsyslog_d_presets_50_default | combine(rsyslog_rsyslog_d_presets_validate_false) }}"
 

@@ -1,5 +1,9 @@
 # defaults file
 ---
+rsyslog_apparmor_extend_profile: true
+rsyslog_apparmor_utils_install: false
+rsyslog_apparmor_debug: false
+
 rsyslog_global_config_file_validate: true
 
 rsyslog_rsyslog_d_presets_20_ufw:
