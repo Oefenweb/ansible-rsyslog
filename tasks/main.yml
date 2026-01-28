@@ -98,6 +98,7 @@
     apparmor_parser -r -W {{ rsyslog_apparmor_profile }}
   failed_when: false
   changed_when: false
+  when: rsyslog_apparmor_profile_local in _find_profiles.stdout_lines
   tags:
     - configuration
     - rsyslog
