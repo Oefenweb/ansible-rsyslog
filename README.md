@@ -11,6 +11,13 @@ None
 
 #### Variables
 
+* `rsyslog_apparmor_extend_profile`: [default: `true`]: Whether to extend the default `usr.sbin.rsyslogd` profile to make validation work (in most cases)
+* `rsyslog_apparmor_utils_install`: [default: `false`]: Whether to install apparmor-utils or not
+* `rsyslog_apparmor_debug`: [default: `false`]: Whether to show more apparmor debugging output
+* `rsyslog_apparmor_profile_local_content`: [default: `[]`]: Additional file content of the extended `usr.sbin.rsyslogd` profile (e.g. `/var/lib/haproxy/dev/log rwl,`)
+
+* `rsyslog_global_config_file_validate`: [default: `true`]: Whether the global configuration should be validated before it is applied
+
 * `rsyslog_repeated_msg_reduction`: [default: `true`]: Repeated message reduction
 * `rsyslog_file_owner`: [default: `syslog`, `root` on Debian]: Set the file owner for dynaFiles newly created
 * `rsyslog_file_group`: [default: `adm`]: Set the file group for dynaFiles newly created
@@ -66,7 +73,7 @@ None
         rules:
           - rule: ':msg,contains,"[UFW "'
             logpath: '/var/log/ufw.log'
-      postfix: "{{ rsyslog_rsyslog_d_presets_postfix }}"
+      postfix: "{{ rsyslog_rsyslog_d_presets_postfix | combine(rsyslog_rsyslog_d_presets_validate_false) }}"
       49-haproxy:
         settings:
           # Create an additional socket in haproxy's chroot in order to allow logging via
@@ -78,6 +85,7 @@ None
             logpath: '/var/log/haproxy.log'
         directives:
           - '&~'
+        validate: false
 ```
 
 #### License

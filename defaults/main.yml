@@ -4,6 +4,8 @@ rsyslog_apparmor_extend_profile: true
 rsyslog_apparmor_utils_install: false
 rsyslog_apparmor_debug: false
 
+rsyslog_apparmor_profile_local_content: ''
+
 rsyslog_global_config_file_validate: true
 
 rsyslog_rsyslog_d_presets_20_ufw:
@@ -97,5 +99,3 @@ rsyslog_rsyslog_d_presets_postfix:
 
 rsyslog_rsyslog_d_files:
   50-default: "{{ rsyslog_rsyslog_d_presets_50_default }}"
-
-rsyslog_apparmor_profile_local_content: ''

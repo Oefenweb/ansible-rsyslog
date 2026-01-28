@@ -1,5 +1,4 @@
-# {{ ansible_managed | comment }}
-
+{{ ansible_managed | comment }}
 {% for item in item.value.settings | default([]) %}
 {{ item }}
 {% endfor %}
