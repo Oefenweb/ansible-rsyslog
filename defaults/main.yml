@@ -93,7 +93,6 @@ rsyslog_rsyslog_d_presets_postfix:
     # mail logging when rsyslog is restarted.  If the directory is missing,
     # rsyslog will silently skip creating the socket.
     - '$AddUnixListenSocket /var/spool/postfix/dev/log'
-  validate: "{{ ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_version'] is version_compare('16.04', '<') }}"
 
 rsyslog_rsyslog_d_files:
   50-default: "{{ rsyslog_rsyslog_d_presets_50_default }}"
