@@ -67,7 +67,7 @@
   ansible.builtin.copy:
     content: |
       {% for line in _find_homes.stdout_lines | unique %}
-      {{ line }}/.ansible/tmp/** r,
+      {{ line }}/.ansible/tmp/ansible-tmp-*/** r,
       {% endfor %}
     dest: "{{ rsyslog_apparmor_profile_local }}"
     owner: root
@@ -95,7 +95,7 @@
 
 - name: apparmor | apply profile
   ansible.builtin.shell: >
-    apparmor_parser -r -W --debug {{ rsyslog_apparmor_profile }}
+    apparmor_parser -r -W {{ rsyslog_apparmor_profile }}
   failed_when: false
   changed_when: false
   tags:
