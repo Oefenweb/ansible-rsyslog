@@ -2,9 +2,6 @@
 ---
 rsyslog_global_config_file_validate: true
 
-rsyslog_rsyslog_d_presets_validate_false:
-  validate: false
-
 rsyslog_rsyslog_d_presets_20_ufw:
   rules:
     # Log kernel generated UFW log messages to file

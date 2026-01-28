@@ -15,3 +15,9 @@ rsyslog_global_config_file_tmp: "{{ rsyslog_global_config_file | replace('etc', 
 
 rsyslog_apparmor_profile: /etc/apparmor.d/usr.sbin.rsyslogd
 rsyslog_apparmor_profile_local: /etc/apparmor.d/local/usr.sbin.rsyslogd
+
+rsyslog_rsyslog_d_presets_validate_false:
+  validate: false
+
+rsyslog_rsyslog_d_presets_validate_true:
+  validate: true
